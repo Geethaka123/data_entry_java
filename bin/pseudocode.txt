@@ -1,0 +1,195 @@
+// Function to write headers to CSV file
+function writeHeaders(writer):
+    write "TeamName,CarCode,DriverName,GrandPrix,PositionFinished,FastestLap" to writer
+
+// Function to get the file name from user input
+function getFileName(scanner):
+    print "What would you like to name your CSV file? "
+    return scanner.nextLine().trim() + ".csv"
+
+// Function to validate if a string is non-empty
+function isValidString(value):
+    return value is not empty
+
+// Function to validate if a string can be parsed as a non-negative double
+function isValidDouble(value):
+    try:
+        number = parseDouble(value)
+        return number >= 0
+    catch (NumberFormatException e):
+        return false
+
+// Function to validate if a string can be parsed as an integer
+function isValidInteger(value):
+    try:
+        parseInt(value)
+        return true
+    catch (NumberFormatException e):
+        return false
+
+// Main function
+function main():
+    scanner = new Scanner(System.in)
+    print "Welcome to the FIA F1 Data Entry Program\n"
+
+    // Prompt for the number of F1 Teams
+    numTeams = 0
+    while true:
+        print "How many F1 Teams are there? "
+        input = scanner.nextLine().trim()
+        if isValidInteger(input):
+            numTeams = parseInt(input)
+            break
+        else:
+            print "Invalid input. Please enter a valid integer.\n"
+
+    // Arrays to store team data
+    teamNames = new String[numTeams]
+    carCodes = new String[numTeams]
+    driverNames = new String[numTeams]
+    grandPrixs = new String[numTeams]
+    positionsFinished = new int[numTeams]
+    fastestLaps = new double[numTeams]
+
+    // Enter F1 Team data
+    for i = 0 to numTeams-1:
+        print "Enter the data for Team " + (i + 1) + ":\n"
+        print "Team Name: "
+        teamNames[i] = scanner.nextLine().trim()
+        while not isValidString(teamNames[i]):
+            print "Team Name cannot be empty. Please enter again:\n"
+            print "Team Name: "
+            teamNames[i] = scanner.nextLine().trim()
+
+        print "Car Code: "
+        carCodes[i] = scanner.nextLine().trim()
+        while not isValidString(carCodes[i]):
+            print "Car Code cannot be empty. Please enter again:\n"
+            print "Car Code: "
+            carCodes[i] = scanner.nextLine().trim()
+
+        print "Driver Name: "
+        driverNames[i] = scanner.nextLine().trim()
+        while not isValidString(driverNames[i]):
+            print "Driver Name cannot be empty. Please enter again:\n"
+            print "Driver Name: "
+            driverNames[i] = scanner.nextLine().trim()
+
+        print "Grand Prix: "
+        grandPrixs[i] = scanner.nextLine().trim()
+        while not isValidString(grandPrixs[i]):
+            print "Grand Prix cannot be empty. Please enter again:\n"
+            print "Grand Prix: "
+            grandPrixs[i] = scanner.nextLine().trim()
+
+        // Validate Position Finished
+        while true:
+            print "Position Finished: "
+            position = scanner.nextLine().trim()
+            if isValidInteger(position):
+                positionsFinished[i] = parseInt(position)
+                break
+            else:
+                print "Invalid input. Please enter an integer for Position Finished.\n"
+
+        // Validate Fastest Lap
+        while true:
+            print "Fastest Lap: "
+            fastestLap = scanner.nextLine().trim()
+            if isValidDouble(fastestLap):
+                fastestLaps[i] = parseDouble(fastestLap)
+                break
+            else:
+                print "Invalid input. Please enter a non-negative double for Fastest Lap.\n"
+
+    // Display current data
+    print "The current data looks like this:\n"
+    for i = 0 to numTeams-1:
+        print teamNames[i] + "," + carCodes[i] + "," + driverNames[i] + "," + grandPrixs[i] + "," + positionsFinished[i] + "," + fastestLaps[i] + "\n"
+
+    // Prompt if user wants to enter more data
+    while true:
+        print "Would you like to enter more data (Y or N)? "
+        moreDataOption = scanner.nextLine().trim()
+        if moreDataOption.equalsIgnoreCase("Y"):
+            print "Enter the data for the additional Team:\n"
+            print "Team Name: "
+            teamName = scanner.nextLine().trim()
+            while not isValidString(teamName):
+                print "Team Name cannot be empty. Please enter again:\n"
+                print "Team Name: "
+                teamName = scanner.nextLine().trim()
+
+            print "Car Code: "
+            carCode = scanner.nextLine().trim()
+            while not isValidString(carCode):
+                print "Car Code cannot be empty. Please enter again:\n"
+                print "Car Code: "
+                carCode = scanner.nextLine().trim()
+
+            print "Driver Name: "
+            driverName = scanner.nextLine().trim()
+            while not isValidString(driverName):
+                print "Driver Name cannot be empty. Please enter again:\n"
+                print "Driver Name: "
+                driverName = scanner.nextLine().trim()
+
+            print "Grand Prix: "
+            grandPrix = scanner.nextLine().trim()
+            while not isValidString(grandPrix):
+                print "Grand Prix cannot be empty. Please enter again:\n"
+                print "Grand Prix: "
+                grandPrix = scanner.nextLine().trim()
+
+            // Validate Position Finished
+            while true:
+                print "Position Finished: "
+                position = scanner.nextLine().trim()
+                if isValidInteger(position):
+                    positionFinished = parseInt(position)
+                    break
+                else:
+                    print "Invalid input. Please enter an integer for Position Finished.\n"
+
+            // Validate Fastest Lap
+            while true:
+                print "Fastest Lap: "
+                fastestLapInput = scanner.nextLine().trim()
+                if isValidDouble(fastestLapInput):
+                    fastestLap = parseDouble(fastestLapInput)
+                    break
+                else:
+                    print "Invalid input. Please enter a non-negative double for Fastest Lap.\n"
+
+            // Append new data to arrays
+            append teamName to teamNames
+            append carCode to carCodes
+            append driverName to driverNames
+            append grandPrix to grandPrixs
+            append positionFinished to positionsFinished
+            append fastestLap to fastestLaps
+
+            numTeams++ // Increment the number of teams
+
+            // Display current data
+            print "The current data looks like this:\n"
+            for i = 0 to numTeams-1:
+                print teamNames[i] + "," + carCodes[i] + "," + driverNames[i] + "," + grandPrixs[i] + "," + positionsFinished[i] + "," + fastestLaps[i] + "\n"
+        else if moreDataOption.equalsIgnoreCase("N"):
+            // Write data to CSV file
+            try:
+                writer = new PrintWriter(new FileWriter(getFileName(scanner)))
+                writeHeaders(writer)
+
+                for i = 0 to numTeams-1:
+                    writer.printf("%s,%s,%s,%s,%d,%.3f%n", teamNames[i], carCodes[i], driverNames[i], grandPrixs[i], positionsFinished[i], fastestLaps[i])
+
+                print "Data has been successfully stored in the CSV file.\n"
+            catch (IOException e):
+                print "Error: " + e.getMessage() + "\n"
+            finally:
+                if writer is not null:
+                    writer.close()
+            break
+        else:
+            print "Invalid option. Please enter Y or N.\n"
