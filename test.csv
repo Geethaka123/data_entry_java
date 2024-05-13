@@ -1,0 +1,7 @@
+TeamName,CarCode,DriverName,GrandPrix,PositionFinished,FastestLap
+Ferrari,FER01,Michael Schumacher,Australia,1,83.456
+Ferrari,FER01,Rubens Barrichello,Australia,2,84.567
+Mercedes,MER02,Lewis Hamilton,Australia,3,85.678
+Mercedes,MER02,Valtteri Bottas,Australia,4,86.789
+Red Bull,RBR03,Max Verstappen,Australia,5,87.890
+Red Bull,RBR03,Sergio Perez,Australia,-1,88.901

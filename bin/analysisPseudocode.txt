@@ -1,0 +1,126 @@
+class Team:
+    attributes:
+        teamName
+        carCode
+        driverName
+        grandPrix
+        positionFinished
+        fastestLap
+
+    methods:
+        getters and setters for attributes
+
+class F1AnalysisProgram:
+    attributes:
+        teams[]
+        teamCount
+
+    methods:
+        main():
+            initialize scanner
+            display welcome message
+            loop until exit:
+                prompt for filename until valid
+                read data from CSV file
+                prompt for analysis type
+                switch analysis type:
+                    case "all":
+                        performAllTeamsAnalysis()
+                    case "single":
+                        performSingleTeamAnalysis()
+                    default:
+                        display invalid choice message
+                prompt for exit choice
+
+        readDataFromCSV(filename):
+            try:
+                open file
+                count lines
+                initialize teams array
+                close file
+            catch FileNotFoundException:
+                display file not found error
+                return false
+            catch IOException:
+                display error reading file
+                return false
+            try:
+                open file
+                skip header line
+                loop through lines:
+                    parse data into Team objects
+                    add teams to array
+                close file
+                return true
+            catch FileNotFoundException:
+                display file not found error
+                return false
+            catch IOException or NumberFormatException:
+                display error reading file
+                return false
+
+        performAllTeamsAnalysis():
+            list completed teams
+            list incomplete teams
+            calculate fastest team
+            sort teams by fastest lap
+            sort drivers by fastest lap descending
+            sort drivers by fastest lap ascending
+
+        listCompletedTeams():
+            loop through teams:
+                if team position finished > 0:
+                    display team name
+
+        listIncompleteTeams():
+            loop through teams:
+                if team position finished == -1:
+                    display team name
+
+        calculateFastestTeam():
+            initialize fastestTeamName, fastestCombinedTime
+            loop through teams:
+                if team is not null:
+                    calculate combined time for team
+                    if combined time is faster:
+                        update fastestTeamName, fastestCombinedTime
+            display fastest team and combined fastest time
+
+        sortTeamsByFastestLap():
+            bubble sort teams by fastest lap
+            display teams and fastest lap times
+
+        sortDriversByFastestLapDescending():
+            initialize allDrivers and fastestLaps arrays
+            loop through teams:
+                if team is not null and position finished > 0:
+                    add driver name and fastest lap time to arrays
+            bubble sort arrays by fastest lap time descending
+            display sorted drivers and fastest lap times
+
+        sortDriversByFastestLapAscending():
+            initialize allDrivers and fastestLaps arrays
+            loop through teams:
+                if team position finished > 0:
+                    add driver name and fastest lap time to arrays
+            bubble sort arrays by fastest lap time ascending
+            display sorted drivers and fastest lap times
+
+        performSingleTeamAnalysis():
+            prompt for team name
+            display analysis for team
+            prompt for filtering by car code
+            if filter choice is yes:
+                prompt for car code
+                filter teams by car code
+
+        filterTeamsByCarCode(teamName, carCode):
+            initialize drivers array
+            loop through teams:
+                if team matches team name and car code:
+                    add driver name to array
+            if drivers found:
+                sort drivers array
+                display sorted drivers
+            else:
+                display no drivers found message
